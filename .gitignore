@@ -2,3 +2,4 @@
 **/out/**
 .vscode/
 .env 
+**/node_modules/**
