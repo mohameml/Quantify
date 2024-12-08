@@ -33,20 +33,18 @@ void MonteCarlo::price(double &price, double &price_std)
     int D = this->option->size;
     int M = this->sample_number;
     int N = this->fixing_dates_number;
-    double r = this->model->interest_rate;
+    double r = this->model->r_;
     double T = this->option->maturity;
     price = 0.0;
     price_std = 0.0;
-    PnlMat *matrix = pnl_mat_create(N + 1, D);
     for (int i = 0; i < M; i++)
     {
-        this->model->asset(matrix, this->rng);
-        double phi_j = this->option->payOff(matrix);
+        this->model->path(this->rng);
+        double phi_j = this->option->payOff(model->pathMatrix);
         price += phi_j;
         price_std += phi_j * phi_j;
     }
     end_of_calcul_price(price, price_std, 0.0);
-    pnl_mat_free(&matrix);
 }
 
 void MonteCarlo::price_delta(double &price, double &price_std, PnlVect *deltas_vect, PnlVect *stddev_deltas_vect)
@@ -56,38 +54,34 @@ void MonteCarlo::price_delta(double &price, double &price_std, PnlVect *deltas_v
     int M = this->sample_number;
     int N = this->fixing_dates_number;
     double h = this->fd_step;
-    double r = this->model->interest_rate;
+    double r = this->model->r_;
     double T = this->option->maturity;
 
     price = 0.0;
     price_std = 0.0;
 
-    PnlMat *matrix = pnl_mat_create(N + 1, D);
-
     for (int i = 0; i < M; i++)
     {
-        this->model->asset(matrix, this->rng);
-        double phi_j = this->option->payOff(matrix);
+        this->model->path(this->rng);
+        double phi_j = this->option->payOff(model->pathMatrix);
         price += phi_j;
         price_std += phi_j * phi_j;
 
         for (int d = 0; d < D; d++)
         {
             double diff_payoff = 0.0;
-            model->shift_asset(d, 1.0 + h, matrix);
-            diff_payoff += option->payOff(matrix);
-            model->shift_asset(d, (1.0 - h) / (1.0 + h), matrix);
-            diff_payoff -= option->payOff(matrix);
-            model->shift_asset(d, 1.0 / (1.0 - h), matrix);
+            model->shift_asset(d, 1.0 + h);
+            diff_payoff += option->payOff(model->pathMatrix);
+            model->shift_asset(d, (1.0 - h) / (1.0 + h));
+            diff_payoff -= option->payOff(model->pathMatrix);
+            model->shift_asset(d, 1.0 / (1.0 - h));
             LET(deltas_vect, d) += diff_payoff;
             LET(stddev_deltas_vect, d) += diff_payoff * diff_payoff;
         }
     }
 
     end_of_calcul_price(price, price_std, 0.0);
-    end_of_calcul_delta(deltas_vect, stddev_deltas_vect, 0.0, model->spots);
-
-    pnl_mat_free(&matrix);
+    end_of_calcul_delta(deltas_vect, stddev_deltas_vect, 0.0, model->spot);
 }
 
 void MonteCarlo::price_delta(double t, double &price, double &price_std, const PnlMat *Past, PnlVect *deltas_vect, PnlVect *stddev_deltas_vect)
@@ -97,29 +91,27 @@ void MonteCarlo::price_delta(double t, double &price, double &price_std, const P
     int M = this->sample_number;
     int N = this->fixing_dates_number;
     double h = this->fd_step;
-    double r = this->model->interest_rate;
+    double r = this->model->r_;
     double T = this->option->maturity;
 
     price = 0.0;
     price_std = 0.0;
 
-    PnlMat *matrix = pnl_mat_create(N + 1, D);
-
     for (int i = 0; i < M; i++)
     {
-        this->model->asset(Past, t, T, matrix, this->rng);
-        double phi_j = this->option->payOff(matrix);
+        this->model->path(Past, t, this->rng);
+        double phi_j = this->option->payOff(model->pathMatrix);
         price += phi_j;
         price_std += phi_j * phi_j;
 
         for (int d = 0; d < D; d++)
         {
             double diff_payoff = 0.0;
-            model->shift_asset(d, t, 1 + h, matrix);
-            diff_payoff += option->payOff(matrix);
-            model->shift_asset(d, t, (1.0 - h) / (1.0 + h), matrix);
-            diff_payoff -= option->payOff(matrix);
-            this->model->shift_asset(d, t, 1.0 / (1.0 - h), matrix);
+            model->shift_asset(d, t, 1 + h);
+            diff_payoff += option->payOff(model->pathMatrix);
+            model->shift_asset(d, t, (1.0 - h) / (1.0 + h));
+            diff_payoff -= option->payOff(model->pathMatrix);
+            this->model->shift_asset(d, t, 1.0 / (1.0 - h));
             LET(deltas_vect, d) += diff_payoff;
             LET(stddev_deltas_vect, d) += diff_payoff * diff_payoff;
         }
@@ -128,8 +120,6 @@ void MonteCarlo::price_delta(double t, double &price, double &price_std, const P
     end_of_calcul_price(price, price_std, t);
     PnlVect St = pnl_vect_wrap_mat_row(Past, Past->m - 1);
     end_of_calcul_delta(deltas_vect, stddev_deltas_vect, t, &St);
-
-    pnl_mat_free(&matrix);
 }
 
 void MonteCarlo::calculPAndL(PnlMat *market_data, double &p_and_l)
@@ -141,17 +131,17 @@ void MonteCarlo::calculPAndL(PnlMat *market_data, double &p_and_l)
     PnlVect *delta_stdev = pnl_vect_create_from_zero(model->model_size); // std_dev
     double step = option->maturity / (double)hedging_dates_number;       // T/H
     int H_N = hedging_dates_number / fixing_dates_number;                // H/N
-    double r = model->interest_rate;
+    double r = model->r_;
     double riskFreePortfolio = 0.0;
 
     PnlMat *past = pnl_mat_create(this->fixing_dates_number + 1, option->size);
     pnl_mat_resize(past, 2, option->size);
-    pnl_mat_set_row(past, model->spots, 0);
+    pnl_mat_set_row(past, model->spot, 0);
 
     // traitement de V0
     price_delta(price, price_stdev, delta, delta_stdev);
     pnl_vect_clone(delta_prec, delta);
-    riskFreePortfolio = price - pnl_vect_scalar_prod(delta, model->spots);
+    riskFreePortfolio = price - pnl_vect_scalar_prod(delta, model->spot);
 
     for (int i = 1; i <= this->hedging_dates_number; i++)
     {
@@ -180,7 +170,7 @@ void MonteCarlo::calculPAndL(PnlMat *market_data, double &p_and_l)
 
 void MonteCarlo::end_of_calcul_price(double &price, double &price_stdev, double t) const
 {
-    double r = model->interest_rate;
+    double r = model->r_;
     double T = option->maturity;
     double M = sample_number;
     price = std::exp(-r * (T - t)) * price / M;
@@ -191,7 +181,7 @@ void MonteCarlo::end_of_calcul_price(double &price, double &price_stdev, double 
 void MonteCarlo::end_of_calcul_delta(PnlVect *delta, PnlVect *delta_stdev, double t, PnlVect *St) const
 {
     double M = sample_number;
-    double r = model->interest_rate;
+    double r = model->r_;
     double T = option->maturity;
     double h = fd_step;
 

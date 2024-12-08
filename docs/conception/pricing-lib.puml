@@ -1,0 +1,101 @@
+@startuml conception
+
+
+class MonteCarlo {
+    + option : Option 
+    + model : Model
+    + fixingDatesNumber : int N
+    + sampleNumber : int M
+    + fdStep : int h 
+    + hedging_dates_number : int H 
+    + price()
+    
+    
+}
+
+
+abstract class Option {
+    + Maturity : Date 
+    + strike : double 
+    + type :  OptionType
+    + optionSize : double
+    + abstract payOff(PnlMat* matrix) 
+}
+
+Enum OptionType {
+    + Basket : 0 
+    + Asian : 1 
+    + Performance : 2
+}
+
+class OptionBasket {
+    + payoffCoeffcients : PnlVect*   
+    + override payOff(PnlMat* matrix)
+}
+
+class OptionAsian {
+    + payoffCoeffcients : PnlVect*   
+    + override payOff(PnlMat* matrix)
+}
+
+class OptionPerformance {
+    + override payOff(PnlMat* matrix)
+}
+
+Option <|-- OptionBasket 
+Option <|-- OptionAsian 
+Option <|-- OptionPerformance 
+
+
+class Model {
+
+    + r_ : double 
+    + spot : PnlVect* 
+    + T_ : Date 
+    + N : int // fixingDatesNumber
+    + volatility : PnlVect*  // sigma_
+    + time_step : double // T/N : time_step 
+    + sqrt_time_step : double // sqrt(T/N)
+    + pathMatrix : PnlMat* // store simulation of Model 
+
+    + Modle()
+    + Model(json)
+    + ~Model()
+    + print()
+    + abstract path()
+}
+
+class BlackScholesModel {
+    + correlation : double 
+    + model_size : int 
+    + rng : PnlRng*
+    + void asset(PnlVect listTi , PnlMat* vectSimulation)
+}
+
+class HestonModel {
+    + correlation : double 
+    + k_ : double // constante k du Modéle de Heston 
+    + theta_ : double // constante theta du Modéle de Heston 
+    + number_dis     : double // égale au fixingDatesNumber
+
+}
+
+class CRRModel {
+    + a_ : double // constante a du Modéle de CRR 
+    + b_ : double // constante b du Modéle de CRR 
+    + p_ : double // probability p risque-neutre du modéle CRR
+}
+
+
+Model <|-- BlackScholesModel
+Model <|-- HestonModel
+Model <|-- CRRModel
+
+
+
+MonteCarlo o-- Option 
+MonteCarlo o-- Model
+
+'Option -- OptionType
+
+@enduml 
