@@ -1,7 +1,7 @@
 #include "BlackScholesModel.hpp"
 #include <cmath>
 #include <random>
-#include "compute_last_index.hpp"
+#include "../Utils/compute_last_index.hpp"
 #include <iostream>
 #include <cassert>
 

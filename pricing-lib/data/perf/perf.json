@@ -1,0 +1,21 @@
+{
+    "model type": "bs",
+    "option size": 5,
+    "spot": [
+        100.0
+    ],
+    "maturity": 2.0,
+    "volatility": [
+        0.2
+    ],
+    "interest rate": 0.03,
+    "correlation": 0.5,
+    "option type": "performance",
+    "payoff coefficients": [
+        0.2
+    ],
+    "fixing dates number": 12,
+    "sample number": 50000,
+    "hedging dates number": 96,
+    "fd step": 0.1
+}

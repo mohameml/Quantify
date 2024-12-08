@@ -1,7 +1,8 @@
 #include <cmath>
 #include "MonteCarlo.hpp"
 #include "pnl/pnl_cdf.h"
-#include "compute_last_index.hpp"
+#include "../Utils/compute_last_index.hpp"
+#include <omp.h> // Inclure OpenMP
 
 MonteCarlo::MonteCarlo()
 {

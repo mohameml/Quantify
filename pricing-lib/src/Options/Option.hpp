@@ -2,10 +2,9 @@
 #define OPTION_HPP
 
 #include <iostream>
-#include "option_type.hpp"
 #include "pnl/pnl_vector.h"
 #include "pnl/pnl_matrix.h"
-#include "json_helper.hpp"
+#include "../Utils/json_helper.hpp"
 
 class Option
 {

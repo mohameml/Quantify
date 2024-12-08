@@ -1,0 +1,25 @@
+{
+    "model type": "bs",
+    "option size": 2,
+    "strike": 100.0,
+    "spot": [
+        100.0
+    ],
+    "maturity": 1.5,
+    "volatility": [
+        0.2
+    ],
+    "interest rate": 0.02,
+    "correlation": 0.0,
+    "trend": [
+        0.04
+    ],
+    "option type": "asian",
+    "payoff coefficients": [
+        0.5
+    ],
+    "fixing dates number": 24,
+    "sample number": 50000,
+    "hedging dates number": 360,
+    "fd step": 0.1
+}

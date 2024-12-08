@@ -1,8 +1,8 @@
 #ifndef MONTE_CARLO_HPP
 #define MONTE_CARLO_HPP
 
-#include "Option.hpp"
-#include "BlackScholesModel.hpp"
+#include "../Options/Option.hpp"
+#include "../Model/BlackScholesModel.hpp"
 #include "pnl/pnl_vector.h"
 
 class MonteCarlo

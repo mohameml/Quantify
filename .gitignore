@@ -3,3 +3,5 @@
 .vscode/
 .env 
 **/node_modules/**
+**/lib/**
+**/.vscode/**
