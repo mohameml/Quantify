@@ -1,0 +1,294 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Pricing Engine Input",
+    "type": "object",
+    "required": [
+        "as_of",
+        "model",
+        "market",
+        "instrument",
+        "pricing"
+    ],
+    "properties": {
+        "as_of": {
+            "type": "string",
+            "format": "date"
+        },
+        "model": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "black_scholes",
+                        "heston",
+                        "crr"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "market": {
+            "type": "object",
+            "required": [
+                "day_count",
+                "domestic_currency",
+                "currencies",
+                "underlyings"
+            ],
+            "properties": {
+                "day_count": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "domestic_currency": {
+                    "type": "string"
+                },
+                "currencies": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "interest_rate"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "interest_rate": {
+                                "type": "number"
+                            },
+                            "volatility": {
+                                "type": "number"
+                            },
+                            "spot": {
+                                "type": "number"
+                            },
+                            "drift": {
+                                "type": "number"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "underlyings": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "currency",
+                            "spot",
+                            "volatility"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "currency": {
+                                "type": "string"
+                            },
+                            "spot": {
+                                "type": "number"
+                            },
+                            "volatility": {
+                                "type": "number"
+                            },
+                            "drift": {
+                                "type": "number"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "correlation": {
+                    "type": "object",
+                    "properties": {
+                        "matrix": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "cholesky": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "instrument": {
+            "type": "object",
+            "required": [
+                "type",
+                "quantity",
+                "maturity"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "vanilla_call_euro",
+                        "vanilla_put_euro",
+                        "basket",
+                        "conditional_basket",
+                        "call_currency"
+                    ]
+                },
+                "quantity": {
+                    "type": "number"
+                },
+                "maturity": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "maturity_in_days": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "basket": {
+                    "type": "object",
+                    "properties": {
+                        "underlyings": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1
+                        },
+                        "weights": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            },
+                            "minItems": 1
+                        }
+                    },
+                    "required": [
+                        "underlyings",
+                        "weights"
+                    ],
+                    "additionalProperties": false
+                },
+                "legs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "leg_type",
+                            "pay_currency"
+                        ],
+                        "properties": {
+                            "leg_type": {
+                                "type": "string",
+                                "enum": [
+                                    "coupon_if_basket_above_strike",
+                                    "coupon_fixed",
+                                    "redemption",
+                                    "fx_call"
+                                ]
+                            },
+                            "payment_dates": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "format": "date"
+                                }
+                            },
+                            "strikes": {
+                                "type": "array",
+                                "items": {
+                                    "type": "number"
+                                }
+                            },
+                            "coupon": {
+                                "type": "number"
+                            },
+                            "pay_currency": {
+                                "type": "string"
+                            },
+                            "evaluation_basis": {
+                                "type": "string"
+                            },
+                            "observation": {
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "pricing": {
+            "type": "object",
+            "required": [
+                "method",
+                "params"
+            ],
+            "properties": {
+                "method": {
+                    "type": "string",
+                    "enum": [
+                        "monte_carlo",
+                        "fd",
+                        "analytic"
+                    ]
+                },
+                "params": {
+                    "type": "object",
+                    "properties": {
+                        "samples": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "relative_fd_step": {
+                            "type": "number"
+                        },
+                        "hedging": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "fixed"
+                                    ]
+                                },
+                                "period_days": {
+                                    "type": "integer",
+                                    "minimum": 1
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "period_days"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

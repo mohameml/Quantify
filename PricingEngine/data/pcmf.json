@@ -1,0 +1,104 @@
+{
+    "assetDescription": {
+        "underlyingCurrencyCorrespondence": {
+            "id_0": "eur",
+            "id_1": "eur",
+            "id_2": "eur",
+            "id_3": "eur",
+            "id_4": "eur"
+        },
+        "currencyRates": {
+            "eur": 0.05
+        },
+        "domesticCurrencyId": "eur"
+    },
+    "rebalancingOracleDescription": {
+        "period": 1,
+        "type": "Fixed"
+    },
+    "numberOfDaysInOneYear": 252,
+    "payoffDescription": {
+        "type": "ConditionalBasket",
+        "creationDate": "2025-01-06T00:00:00",
+        "paymentDates": [
+            "2025-03-06T00:00:00",
+            "2025-04-07T00:00:00",
+            "2025-05-06T00:00:00"
+        ],
+        "strikes": [
+            15,
+            19,
+            18
+        ]
+    },
+    "pricingParams": {
+        "underlyingPositions": {
+            "id_0": 0,
+            "id_1": 1,
+            "id_2": 2,
+            "id_3": 3,
+            "id_4": 4
+        },
+        "foreignCurrencyPositions": {},
+        "volatilities": [
+            0.3,
+            0.25,
+            0.25,
+            0.1,
+            0.45
+        ],
+        "correlations": [
+            [
+                1,
+                0.22,
+                -0.15,
+                -0.15,
+                -0.15
+            ],
+            [
+                0.22,
+                1,
+                -0.15,
+                -0.15,
+                -0.15
+            ],
+            [
+                -0.15,
+                -0.15,
+                1,
+                0.22,
+                0.22
+            ],
+            [
+                -0.15,
+                -0.15,
+                0.22,
+                1,
+                0.22
+            ],
+            [
+                -0.15,
+                -0.15,
+                0.22,
+                0.22,
+                1
+            ]
+        ],
+        "initialSpots": [
+            13,
+            15,
+            17,
+            17,
+            14
+        ],
+        "trends": [
+            0.35,
+            0.29,
+            0.3,
+            0.34,
+            0.28
+        ],
+        "sampleNb": 10000,
+        "relativeFiniteDifferenceStep": 0.1
+    }
+}

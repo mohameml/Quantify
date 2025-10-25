@@ -1,0 +1,49 @@
+{
+    "as_of": "2025-10-10",
+    "model": {
+        "type": "black_scholes"
+    },
+    "market": {
+        "domestic_currency": "EUR",
+        "currencies": [
+            {
+                "id": "EUR",
+                "interest_rate": 0.05
+            }
+        ],
+        "underlyings": [
+            {
+                "id": "BNP",
+                "currency": "EUR",
+                "spot": 78,
+                "volatility": 0.30,
+                "drift": 0.35
+            }
+        ],
+        "correlation": 0.0
+    },
+    "instrument": {
+        "type": "call_vanilla",
+        "size": 1,
+        "basket": {
+            "underlyings": [
+                "BNP"
+            ],
+            "weights": [
+                1.0
+            ]
+        },
+        "maturity": "2025-11-10"
+    },
+    "pricing": {
+        "method": "monte_carlo",
+        "params": {
+            "samples": 10000,
+            "relative_fd_step": 0.10,
+            "hedging": {
+                "type": "fixed",
+                "period_days": 1
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@
 
 -   Le projet repose sur une architecture en deux grandes parties :
 
-    -   **Pricing-lib (C++)**
+    -   **Pricing-lib (C++/Rust)**
 
         Au coeur de Quantify se trouve une bibliothèque puissante écrite en C++ pour le pricing de produits dérivés.
 

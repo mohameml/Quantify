@@ -1,0 +1,11 @@
+/home/mohameml/Desktop/github/05_Projects/Quantify/pcpd/target/debug/deps/libxattr-c2f5a395087ce0f4.rmeta: /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/lib.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/error.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/mod.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/util.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/linux_macos.rs
+
+/home/mohameml/Desktop/github/05_Projects/Quantify/pcpd/target/debug/deps/libxattr-c2f5a395087ce0f4.rlib: /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/lib.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/error.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/mod.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/util.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/linux_macos.rs
+
+/home/mohameml/Desktop/github/05_Projects/Quantify/pcpd/target/debug/deps/xattr-c2f5a395087ce0f4.d: /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/lib.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/error.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/mod.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/util.rs /home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/linux_macos.rs
+
+/home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/lib.rs:
+/home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/error.rs:
+/home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/mod.rs:
+/home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/util.rs:
+/home/mohameml/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/xattr-1.5.1/src/sys/linux_macos.rs:

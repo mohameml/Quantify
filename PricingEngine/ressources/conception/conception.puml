@@ -1,0 +1,68 @@
+@startuml conception
+
+
+class MonteCarlo {
+    + option : Option 
+    + model : BlackScholesModel
+    + fixingDatesNumber : int N
+    + sampleNumber : int M
+    + getDates() : PnlVect* 
+    + market_data : PnlMat* 
+    + fdStep : int h 
+    + hedging_dates_number : int H 
+    + price(t)
+    
+    
+}
+
+
+abstract class Option {
+    + Maturity : Date 
+    + strike : double 
+    + type :  OptionType
+    + optionSize : double
+    + payoffCoeffcients : PnlVect*   
+    + abstract payOff(PnlMat* matrix) 
+}
+
+Enum OptionType {
+    + Basket : 0 
+    + Asian : 1 
+    + Performance : 2
+}
+
+class OptionBasket {
+    + override payOff(PnlMat* matrix)
+}
+
+class OptionAsian {
+    + override payOff(PnlMat* matrix)
+}
+
+class OptionPerformance {
+    + override payOff(PnlMat* matrix)
+}
+
+Option <|-- OptionBasket 
+Option <|-- OptionAsian 
+Option <|-- OptionPerformance 
+
+
+
+class BlackScholesModel {
+    + interesetRate : double 
+    + volatility : PnlVect* 
+    + spot : PnlVect*
+    + correlation : double 
+    + model_size : int 
+    + rng : PnlRng*
+    + void asset(PnlVect listTi , PnlMat* vectSimulation)
+}
+
+
+MonteCarlo o-- Option 
+MonteCarlo o-- BlackScholesModel
+
+'Option -- OptionType
+
+@enduml 

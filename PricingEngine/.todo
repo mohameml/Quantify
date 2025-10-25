@@ -1,0 +1,5 @@
+-   fixe the schema for the json input : simple schema for now
+-   write the list of payoff supported : 3 max for now
+-   model : for now just BS
+-   methode : for now jsut MC
+-   The goal for tomorwo is to have a simple engien and fixe : - input and output
